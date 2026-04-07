@@ -32,23 +32,43 @@ body { font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif; 
   box-shadow: 0 2px 12px rgba(0,0,0,.2);
 }
 .navbar-logo { font-size: 22px; font-weight: 800; letter-spacing: -.5px; }
-.navbar-sub { font-size: 13px; opacity: .75; margin-left: 4px; }
+.navbar-sub { font-size: 13px; opacity: .75; }
 .navbar-right { margin-left: auto; display: flex; gap: 12px; align-items: center; font-size: 13px; opacity: .85; }
 
-/* ── 主体布局 ── */
+/* ── 主体 ── */
 .main { max-width: 1320px; margin: 0 auto; padding: 28px 24px; }
 
-/* ── 配置面板 ── */
-.config-panel {
-  background: var(--card); border-radius: var(--radius);
-  box-shadow: var(--shadow); margin-bottom: 20px; overflow: hidden;
-}
-.config-header {
-  background: var(--primary); color: #fff;
-  padding: 14px 24px; display: flex; align-items: center; gap: 10px;
-  font-size: 15px; font-weight: 700; cursor: pointer;
-  user-select: none;
-}
+/* ── 说明区 ── */
+.guide-section { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 20px; overflow: hidden; }
+.guide-tabs { display: flex; border-bottom: 1px solid var(--border); }
+.guide-tab { padding: 14px 24px; font-size: 14px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; color: var(--muted); transition: all .2s; }
+.guide-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+.guide-pane { padding: 24px; display: none; }
+.guide-pane.active { display: block; }
+
+/* 书签按钮 */
+.bookmarklet-box { background: var(--primary-light); border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+.bookmarklet-box h3 { font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
+.bm-drag-area { background: #fff; border: 2px dashed var(--primary); border-radius: 8px; padding: 16px 20px; display: flex; align-items: center; gap: 16px; }
+.bm-link { display: inline-block; background: var(--primary); color: #fff; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 700; text-decoration: none; cursor: grab; white-space: nowrap; }
+.bm-link:hover { background: var(--primary-dark); }
+.bm-tip { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+.steps { counter-reset: step; }
+.step-item { display: flex; gap: 16px; margin-bottom: 16px; align-items: flex-start; }
+.step-num { width: 28px; height: 28px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+.step-content { flex: 1; }
+.step-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.step-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.step-desc code { background: #F5F5F5; padding: 1px 6px; border-radius: 4px; font-family: monospace; font-size: 12px; }
+
+.faq-item { margin-bottom: 14px; }
+.faq-q { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.faq-a { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* ── 洗库面板 ── */
+.config-panel { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 20px; overflow: hidden; }
+.config-header { background: var(--primary); color: #fff; padding: 14px 24px; display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 700; cursor: pointer; user-select: none; }
 .config-header .toggle-icon { margin-left: auto; transition: transform .3s; }
 .config-header.collapsed .toggle-icon { transform: rotate(-90deg); }
 .config-body { padding: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
@@ -56,52 +76,22 @@ body { font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif; 
 
 .form-group { display: flex; flex-direction: column; gap: 6px; }
 .form-label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
-.form-input, .form-select {
-  border: 1.5px solid var(--border); border-radius: 8px;
-  padding: 10px 14px; font-size: 14px; outline: none;
-  transition: border-color .2s, box-shadow .2s;
-  background: #fff;
-}
+.form-input, .form-select { border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: 14px; outline: none; transition: border-color .2s, box-shadow .2s; background: #fff; }
 .form-input:focus, .form-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(21,101,192,.12); }
 .form-hint { font-size: 11px; color: #999; }
 
-/* Cookie 区域 */
-.cookie-row { grid-column: 1 / -1; }
-.cookie-wrap { display: flex; gap: 10px; }
-.cookie-input {
-  flex: 1; border: 1.5px solid var(--border); border-radius: 8px;
-  padding: 10px 14px; font-size: 13px; outline: none; font-family: monospace;
-  transition: border-color .2s;
-}
-.cookie-input:focus { border-color: var(--primary); }
-.cookie-input.ok { border-color: var(--success); background: #F1F8E9; }
-.cookie-input.err { border-color: var(--accent); background: #FFF5F5; }
-.cookie-status { display: flex; align-items: center; gap: 6px; font-size: 12px; margin-top: 4px; }
-
-/* 操作按钮行 */
 .action-row { grid-column: 1 / -1; display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
-.btn-run {
-  background: var(--primary); color: #fff; border: none;
-  padding: 12px 32px; border-radius: 10px; font-size: 15px;
-  font-weight: 700; cursor: pointer; transition: background .2s, transform .1s;
-  display: flex; align-items: center; gap: 8px;
-}
+.btn-run { background: var(--primary); color: #fff; border: none; padding: 12px 32px; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .2s, transform .1s; display: flex; align-items: center; gap: 8px; }
 .btn-run:hover { background: var(--primary-dark); }
 .btn-run:active { transform: scale(.98); }
-.btn-run:disabled { background: #90A4AE; cursor: not-allowed; }
-.btn-secondary {
-  background: var(--primary-light); color: var(--primary); border: none;
-  padding: 12px 20px; border-radius: 10px; font-size: 14px;
-  font-weight: 600; cursor: pointer; transition: background .2s;
-}
+.btn-secondary { background: var(--primary-light); color: var(--primary); border: none; padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .2s; }
 .btn-secondary:hover { background: #BBDEFB; }
 
+.error-tip { background: #FFEBEE; border: 1px solid #FFCDD2; border-radius: 8px; padding: 10px 16px; font-size: 13px; color: #C62828; margin-top: 8px; display: none; }
+.error-tip.show { display: block; }
+
 /* ── 进度 ── */
-.progress-card {
-  background: var(--card); border-radius: var(--radius);
-  box-shadow: var(--shadow); padding: 24px; margin-bottom: 20px;
-  display: none;
-}
+.progress-card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; margin-bottom: 20px; display: none; }
 .progress-card.visible { display: block; }
 .progress-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
 .progress-bar-wrap { background: #e0e0e0; border-radius: 100px; height: 10px; overflow: hidden; margin-bottom: 10px; }
@@ -113,66 +103,37 @@ body { font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif; 
 .result-section { display: none; }
 .result-section.visible { display: block; }
 
-/* 统计卡片 */
-.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 20px; }
-.stat-card {
-  background: var(--card); border-radius: var(--radius);
-  box-shadow: var(--shadow); padding: 18px 20px; text-align: center;
-}
-.stat-val { font-size: 36px; font-weight: 800; color: var(--primary); line-height: 1.1; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 14px; margin-bottom: 20px; }
+.stat-card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px 20px; text-align: center; }
+.stat-val { font-size: 34px; font-weight: 800; color: var(--primary); line-height: 1.1; }
 .stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
 .stat-sub { font-size: 11px; color: #bbb; margin-top: 2px; }
 
-/* 图表 */
 .charts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 20px; }
-.chart-card {
-  background: var(--card); border-radius: var(--radius);
-  box-shadow: var(--shadow); padding: 20px;
-}
+.chart-card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; }
 .chart-card h3 { font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--primary-light); }
 .chart-wrap { position: relative; height: 200px; }
 
-/* Top 榜单 */
 .top-list { display: flex; flex-direction: column; gap: 7px; max-height: 220px; overflow-y: auto; }
 .top-item { display: flex; align-items: center; gap: 8px; }
 .top-rank { width: 20px; height: 20px; border-radius: 50%; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--primary-light); color: var(--primary); }
-.top-rank.r1 { background: #FFF3E0; color: #E65100; }
-.top-rank.r2 { background: #F5F5F5; color: #616161; }
-.top-rank.r3 { background: #FBE9E7; color: #BF360C; }
+.top-rank.r1 { background: #FFF3E0; color: #E65100; } .top-rank.r2 { background: #F5F5F5; color: #616161; } .top-rank.r3 { background: #FBE9E7; color: #BF360C; }
 .top-name { flex: 1; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .top-bar-wrap { width: 80px; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; flex-shrink: 0; }
 .top-bar { height: 100%; background: var(--primary); border-radius: 3px; }
 .top-count { font-size: 12px; color: var(--muted); width: 26px; text-align: right; flex-shrink: 0; }
 
-/* 筛选栏 */
-.filter-bar {
-  background: var(--card); border-radius: var(--radius);
-  box-shadow: var(--shadow); padding: 14px 20px;
-  display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
-  margin-bottom: 14px;
-}
-.filter-bar input, .filter-bar select {
-  border: 1.5px solid var(--border); border-radius: 7px;
-  padding: 7px 12px; font-size: 13px; outline: none; background: #fff;
-  transition: border-color .2s;
-}
+.filter-bar { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 14px 20px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+.filter-bar input, .filter-bar select { border: 1.5px solid var(--border); border-radius: 7px; padding: 7px 12px; font-size: 13px; outline: none; background: #fff; transition: border-color .2s; }
 .filter-bar input:focus, .filter-bar select:focus { border-color: var(--primary); }
 .search-box { flex: 1; min-width: 200px; max-width: 300px; }
 .filter-count { margin-left: auto; font-size: 13px; color: var(--muted); font-weight: 600; }
-.export-btn {
-  background: var(--primary-light); color: var(--primary); border: none;
-  padding: 8px 16px; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer;
-}
+.export-btn { background: var(--primary-light); color: var(--primary); border: none; padding: 8px 16px; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer; }
 .export-btn:hover { background: #BBDEFB; }
 
-/* 表格 */
 .table-wrap { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
-thead th {
-  background: var(--primary); color: #fff; padding: 11px 12px;
-  text-align: left; white-space: nowrap; cursor: pointer;
-  user-select: none; position: sticky; top: 0; z-index: 10;
-}
+thead th { background: var(--primary); color: #fff; padding: 11px 12px; text-align: left; white-space: nowrap; cursor: pointer; user-select: none; position: sticky; top: 0; z-index: 10; }
 thead th:hover { background: var(--primary-dark); }
 .sort-icon { margin-left: 3px; opacity: .6; font-style: normal; }
 tbody tr:nth-child(even) { background: #FAFAFA; }
@@ -181,50 +142,23 @@ td { padding: 9px 12px; border-bottom: 1px solid #F0F0F0; vertical-align: middle
 tr:last-child td { border-bottom: none; }
 .name-link { color: var(--primary); text-decoration: none; font-weight: 600; }
 .name-link:hover { text-decoration: underline; }
-
 .badge { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 11px; font-weight: 500; white-space: nowrap; }
-.badge-male   { background: #E3F2FD; color: #1565C0; }
-.badge-female { background: #FCE4EC; color: #C62828; }
-.badge-博士 { background: #EDE7F6; color: #4527A0; }
-.badge-硕士 { background: #E8EAF6; color: #283593; }
-.badge-本科 { background: #E8F5E9; color: #1B5E20; }
-.badge-大专 { background: #FFF3E0; color: #E65100; }
+.badge-male { background: #E3F2FD; color: #1565C0; } .badge-female { background: #FCE4EC; color: #C62828; }
+.badge-博士 { background: #EDE7F6; color: #4527A0; } .badge-硕士 { background: #E8EAF6; color: #283593; }
+.badge-本科 { background: #E8F5E9; color: #1B5E20; } .badge-大专 { background: #FFF3E0; color: #E65100; }
 .badge-tag { background: var(--primary-light); color: var(--primary); margin: 1px; }
-.badge-985  { background: #FFF3E0; color: #E65100; }
-.badge-211  { background: #E8F5E9; color: #2E7D32; }
-.badge-qs   { background: #F3E5F5; color: #6A1B9A; }
+.badge-985 { background: #FFF3E0; color: #E65100; } .badge-211 { background: #E8F5E9; color: #2E7D32; }
+.badge-qs { background: #F3E5F5; color: #6A1B9A; }
 
-/* 分页 */
 .pagination { display: flex; gap: 6px; align-items: center; justify-content: flex-end; padding: 14px 20px; border-top: 1px solid var(--border); }
 .page-btn { padding: 5px 11px; border: 1px solid var(--border); border-radius: 6px; background: #fff; cursor: pointer; font-size: 13px; }
 .page-btn:hover { border-color: var(--primary); color: var(--primary); }
 .page-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 .page-info { font-size: 12px; color: var(--muted); margin: 0 6px; }
 
-/* Cookie 获取指引 */
-.guide-card {
-  background: #FFFDE7; border: 1px solid #FDD835; border-radius: var(--radius);
-  padding: 16px 20px; margin-bottom: 0;
-}
-.guide-card h4 { font-size: 14px; font-weight: 700; color: #F57F17; margin-bottom: 8px; }
-.guide-steps { font-size: 13px; color: #555; line-height: 1.8; }
-.guide-steps code { background: #FFF9C4; padding: 1px 6px; border-radius: 4px; font-family: monospace; font-size: 12px; }
-
-/* 空状态 */
-.empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
-.empty-state .icon { font-size: 48px; margin-bottom: 12px; }
-.empty-state p { font-size: 15px; }
-
-/* 错误提示 */
-.error-tip { background: #FFEBEE; border: 1px solid #FFCDD2; border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #C62828; margin-top: 8px; display: none; }
-.error-tip.show { display: block; }
-
-@media (max-width: 768px) {
-  .main { padding: 16px; }
-  .navbar { padding: 0 16px; }
-  .charts-grid { grid-template-columns: 1fr; }
-  .stat-grid { grid-template-columns: repeat(2, 1fr); }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
+.spin { display: inline-block; animation: spin 1.2s linear infinite; }
+@media (max-width: 768px) { .main { padding: 16px; } .navbar { padding: 0 16px; } .charts-grid { grid-template-columns: 1fr; } .stat-grid { grid-template-columns: repeat(2, 1fr); } }
 </style>
 </head>
 <body>
@@ -232,262 +166,438 @@ tr:last-child td { border-bottom: none; }
 <nav class="navbar">
   <span class="navbar-logo">🔍 洗库工具</span>
   <span class="navbar-sub">HR 人才库 · 自定义搜索 · 数据报告</span>
-  <div class="navbar-right">
-    <span id="lastRunInfo"></span>
-  </div>
+  <div class="navbar-right" id="navRight"></div>
 </nav>
 
 <div class="main">
 
-  <!-- ── 配置面板 ── -->
-  <div class="config-panel">
-    <div class="config-header" id="configHeader" onclick="toggleConfig()">
-      ⚙️ 搜索条件配置
-      <span class="toggle-icon">▼</span>
-    </div>
-    <div class="config-body" id="configBody">
+<!-- ── 使用说明 ── -->
+<div class="guide-section">
+  <div class="guide-tabs">
+    <div class="guide-tab active" onclick="switchTab('use')">🚀 如何使用</div>
+    <div class="guide-tab" onclick="switchTab('faq')">❓ 常见问题</div>
+  </div>
 
-      <!-- Cookie -->
-      <div class="form-group cookie-row">
-        <label class="form-label">🔑 HR 系统 Cookie（必填）</label>
-        <div class="cookie-wrap">
-          <input type="password" class="cookie-input" id="cookieInput"
-            placeholder="粘贴 common-internal-access-token-prod=xxxxx 或仅粘贴 token 值"
-            oninput="onCookieChange()" autocomplete="off">
-          <button class="btn-secondary" onclick="testCookie()" id="testBtn">验证</button>
-        </div>
-        <div class="cookie-status" id="cookieStatus"></div>
-        <div class="guide-card" id="cookieGuide" style="margin-top:10px">
-          <h4>📖 如何获取 Cookie？</h4>
-          <div class="guide-steps">
-            1. 用 Chrome 打开 <code>hr.xiaohongshu.com</code> 并确保已登录<br>
-            2. 按 <code>F12</code> 打开开发者工具 → 切到 <code>Network</code> 标签<br>
-            3. 随便刷新一个请求，点击任意一条 → 在 <code>Request Headers</code> 中找到 <code>cookie</code> 字段<br>
-            4. 复制 <code>common-internal-access-token-prod=</code> 后面的 token 值（或整行）粘贴到上方<br>
-            5. 点「验证」确认 Cookie 有效 ✅
-          </div>
+  <div class="guide-pane active" id="tab-use">
+    <div class="bookmarklet-box">
+      <h3>第一步：把下面这个按钮拖到浏览器书签栏 👇</h3>
+      <div class="bm-drag-area">
+        <a class="bm-link" id="bookmarkletLink" href="#">🔍 洗库工具</a>
+        <div class="bm-tip">
+          把这个蓝色按钮<strong>拖拽</strong>到浏览器顶部书签栏<br>
+          <span style="color:#E65100">⚠️ 不要点击，要拖拽！</span>
         </div>
       </div>
+    </div>
 
-      <!-- 搜索参数 -->
-      <div class="form-group">
-        <label class="form-label">🏢 公司关键词</label>
-        <input class="form-input" id="companyKw" placeholder="如：美团、字节跳动、阿里" value="">
-        <span class="form-hint">支持模糊匹配，搜当前就职公司</span>
+    <div class="steps">
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">打开 HR 系统</div>
+          <div class="step-desc">在浏览器里打开 <code>hr.xiaohongshu.com</code> 并确保已登录，停留在任意页面</div>
+        </div>
       </div>
-
-      <div class="form-group">
-        <label class="form-label">💼 职位关键词</label>
-        <input class="form-input" id="positionKw" placeholder="如：商业分析、策略运营、数据分析" value="">
-        <span class="form-hint">搜候选人当前职位名称</span>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">点击书签「🔍 洗库工具」</div>
+          <div class="step-desc">页面会弹出洗库面板，直接在 HR 系统内运行，<strong>不存在任何跨域问题</strong></div>
+        </div>
       </div>
-
-      <div class="form-group">
-        <label class="form-label">📊 拉取数量</label>
-        <select class="form-select" id="maxPages">
-          <option value="4">200 条（快速，约 15 秒）</option>
-          <option value="10" selected>500 条（推荐，约 30 秒）</option>
-          <option value="20">1000 条（较慢，约 1 分钟）</option>
-          <option value="40">2000 条（较慢，约 2 分钟）</option>
-        </select>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">填写条件，点「开始洗库」</div>
+          <div class="step-desc">填写目标公司、职位关键词、拉取数量，点击开始即可自动抓取数据</div>
+        </div>
       </div>
-
-      <div class="form-group">
-        <label class="form-label">🎓 最低学历（可选）</label>
-        <select class="form-select" id="degFilter">
-          <option value="">不限学历</option>
-          <option value="master">硕士及以上</option>
-          <option value="bachelor">本科及以上</option>
-        </select>
+      <div class="step-item">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-title">查看报告 & 导出</div>
+          <div class="step-desc">自动生成统计图表、人才明细表，支持筛选排序，一键导出 CSV 到 Excel</div>
+        </div>
       </div>
+    </div>
 
-      <!-- 操作行 -->
-      <div class="action-row">
-        <button class="btn-run" id="runBtn" onclick="startFetch()" disabled>
-          <span>🚀</span> <span id="runBtnText">开始洗库</span>
-        </button>
-        <button class="btn-secondary" onclick="clearResult()">清空结果</button>
-        <div class="error-tip" id="errorTip"></div>
-      </div>
-
+    <div style="background:#E8F5E9;border-radius:8px;padding:14px 18px;margin-top:8px;font-size:13px;color:#2E7D32;line-height:1.7">
+      ✅ <strong>书签方式的优点</strong>：在 HR 系统页面内运行，自动获取登录态，无需手动复制 Cookie，一次拖拽永久使用
     </div>
   </div>
 
-  <!-- ── 进度 ── -->
-  <div class="progress-card" id="progressCard">
-    <div class="progress-title">
-      <span class="spin">⏳</span> <span id="progressTitle">正在拉取数据...</span>
+  <div class="guide-pane" id="tab-faq">
+    <div class="faq-item">
+      <div class="faq-q">Q：为什么要用书签方式，不能直接在这个页面上搜？</div>
+      <div class="faq-a">A：浏览器有跨域限制，从 github.io 页面无法直接调用 hr.xiaohongshu.com 的 API。书签方式在 HR 系统内运行，完全绕过跨域问题，且自动带上你的登录 Cookie，无需任何配置。</div>
     </div>
-    <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
-    <div class="progress-log" id="progressLog"></div>
-  </div>
-
-  <!-- ── 结果区 ── -->
-  <div class="result-section" id="resultSection">
-
-    <!-- 统计卡片 -->
-    <div class="stat-grid" id="statGrid"></div>
-
-    <!-- 图表区 -->
-    <div class="charts-grid" id="chartsGrid"></div>
-
-    <!-- 筛选 + 表格 -->
-    <div class="filter-bar">
-      <input class="search-box" type="text" id="searchInput" placeholder="🔍 搜索姓名 / 公司 / 学校 / 职位...">
-      <select id="degTableFilter">
-        <option value="">全部学历</option>
-        <option value="博士">博士</option>
-        <option value="硕士">硕士</option>
-        <option value="本科">本科</option>
-      </select>
-      <select id="cityTableFilter"><option value="">全部城市</option></select>
-      <select id="genderTableFilter">
-        <option value="">全部性别</option>
-        <option value="男">男</option>
-        <option value="女">女</option>
-      </select>
-      <select id="tagTableFilter">
-        <option value="">全部学校背景</option>
-        <option value="985">985</option>
-        <option value="211">211</option>
-        <option value="QS50">QS50</option>
-        <option value="QS100">QS100</option>
-      </select>
-      <span class="filter-count" id="filterCount"></span>
-      <button class="export-btn" onclick="exportCSV()">⬇ 导出 CSV</button>
+    <div class="faq-item">
+      <div class="faq-q">Q：书签怎么拖到书签栏？</div>
+      <div class="faq-a">A：用鼠标左键按住上方蓝色「🔍 洗库工具」按钮不放，拖到浏览器地址栏下方的书签栏后松开。如果书签栏不显示，先按 <code>Ctrl+Shift+B</code>（Mac 是 <code>Command+Shift+B</code>）显示书签栏。</div>
     </div>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th style="width:42px">#</th>
-            <th onclick="sortBy('name')">姓名 <i class="sort-icon">↕</i></th>
-            <th onclick="sortBy('age')" style="width:60px">年龄 <i class="sort-icon">↕</i></th>
-            <th style="width:52px">性别</th>
-            <th onclick="sortBy('location')">城市 <i class="sort-icon">↕</i></th>
-            <th onclick="sortBy('first_degree')">第一学历 <i class="sort-icon">↕</i></th>
-            <th onclick="sortBy('first_school')">第一学历学校 <i class="sort-icon">↕</i></th>
-            <th>专业</th>
-            <th onclick="sortBy('highest_degree')">最高学历 <i class="sort-icon">↕</i></th>
-            <th onclick="sortBy('highest_school')">最高学历学校 <i class="sort-icon">↕</i></th>
-            <th>学校标签</th>
-            <th onclick="sortBy('recent_company')">最近公司 <i class="sort-icon">↕</i></th>
-            <th onclick="sortBy('recent_position')">当前职位 <i class="sort-icon">↕</i></th>
-            <th onclick="sortBy('work_years')" style="width:70px">工作年限 <i class="sort-icon">↕</i></th>
-          </tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-      </table>
-      <div class="pagination" id="paginationBar"></div>
+    <div class="faq-item">
+      <div class="faq-q">Q：拉取速度怎么样？</div>
+      <div class="faq-a">A：每页 50 条，每页之间有 200ms 间隔避免过快。500 条约需 15-20 秒，1000 条约需 30-40 秒。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Q：公司/职位关键词怎么填？</div>
+      <div class="faq-a">A：填候选人当前就职公司名称的一部分，如「美团」「字节」「阿里」。职位是候选人当前岗位名称，如「商业分析」「数据分析」「策略运营」。两个条件同时生效（AND 关系）。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Q：导出的 CSV 可以用 Excel 打开吗？</div>
+      <div class="faq-a">A：可以。CSV 文件用 Excel 直接打开，中文乱码的话选「数据 → 从文本导入」，编码选 UTF-8 即可。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Q：可以分享给同事用吗？</div>
+      <div class="faq-a">A：可以。把这个页面链接或书签代码分享给有 HR 系统权限的同事，他们用自己的账号登录后就能用，数据基于自己的登录态，互不影响。</div>
     </div>
   </div>
-
 </div>
 
-<style>
-@keyframes spin { to { transform: rotate(360deg); } }
-.spin { display: inline-block; animation: spin 1.2s linear infinite; }
-</style>
+<!-- ── 洗库配置 ── -->
+<div class="config-panel">
+  <div class="config-header" id="configHeader" onclick="toggleConfig()">
+    ⚙️ 搜索条件配置
+    <span class="toggle-icon">▼</span>
+  </div>
+  <div class="config-body" id="configBody">
+    <div class="form-group">
+      <label class="form-label">🏢 公司关键词</label>
+      <input class="form-input" id="companyKw" placeholder="如：美团、字节跳动、阿里">
+      <span class="form-hint">搜候选人当前就职公司，支持模糊匹配</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">💼 职位关键词</label>
+      <input class="form-input" id="positionKw" placeholder="如：商业分析、策略运营、数据分析">
+      <span class="form-hint">搜候选人当前职位名称</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">📊 拉取数量</label>
+      <select class="form-select" id="maxPages">
+        <option value="4">200 条（约 10 秒）</option>
+        <option value="10" selected>500 条（约 20 秒）</option>
+        <option value="20">1000 条（约 40 秒）</option>
+        <option value="40">2000 条（约 1.5 分钟）</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">🎓 最低学历（可选）</label>
+      <select class="form-select" id="degFilter">
+        <option value="">不限学历</option>
+        <option value="master">硕士及以上</option>
+        <option value="bachelor">本科及以上</option>
+      </select>
+    </div>
+    <div class="action-row">
+      <button class="btn-run" id="runBtn" onclick="startFetch()">
+        <span>🚀</span> <span id="runBtnText">开始洗库</span>
+      </button>
+      <button class="btn-secondary" onclick="clearResult()">清空结果</button>
+      <div class="error-tip" id="errorTip"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 进度 ── -->
+<div class="progress-card" id="progressCard">
+  <div class="progress-title">
+    <span class="spin" id="progressIcon">⏳</span>
+    <span id="progressTitle">正在拉取数据...</span>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="progress-log" id="progressLog"></div>
+</div>
+
+<!-- ── 结果 ── -->
+<div class="result-section" id="resultSection">
+  <div class="stat-grid" id="statGrid"></div>
+  <div class="charts-grid" id="chartsGrid"></div>
+  <div class="filter-bar">
+    <input class="search-box" type="text" id="searchInput" placeholder="🔍 搜索姓名 / 公司 / 学校 / 职位...">
+    <select id="degTableFilter">
+      <option value="">全部学历</option>
+      <option value="博士">博士</option>
+      <option value="硕士">硕士</option>
+      <option value="本科">本科</option>
+    </select>
+    <select id="cityTableFilter"><option value="">全部城市</option></select>
+    <select id="genderTableFilter">
+      <option value="">全部性别</option>
+      <option value="男">男</option>
+      <option value="女">女</option>
+    </select>
+    <select id="tagTableFilter">
+      <option value="">全部学校背景</option>
+      <option value="985">985</option>
+      <option value="211">211</option>
+      <option value="QS50">QS50</option>
+      <option value="QS100">QS100</option>
+    </select>
+    <span class="filter-count" id="filterCount"></span>
+    <button class="export-btn" onclick="exportCSV()">⬇ 导出 CSV</button>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:42px">#</th>
+          <th onclick="sortBy('name')">姓名 <i class="sort-icon">↕</i></th>
+          <th onclick="sortBy('age')" style="width:60px">年龄 <i class="sort-icon">↕</i></th>
+          <th style="width:52px">性别</th>
+          <th onclick="sortBy('location')">城市 <i class="sort-icon">↕</i></th>
+          <th onclick="sortBy('first_degree')">第一学历 <i class="sort-icon">↕</i></th>
+          <th onclick="sortBy('first_school')">第一学历学校 <i class="sort-icon">↕</i></th>
+          <th>专业</th>
+          <th onclick="sortBy('highest_degree')">最高学历 <i class="sort-icon">↕</i></th>
+          <th onclick="sortBy('highest_school')">最高学历学校 <i class="sort-icon">↕</i></th>
+          <th>学校标签</th>
+          <th onclick="sortBy('recent_company')">最近公司 <i class="sort-icon">↕</i></th>
+          <th onclick="sortBy('recent_position')">当前职位 <i class="sort-icon">↕</i></th>
+          <th onclick="sortBy('work_years')" style="width:70px">工作年限 <i class="sort-icon">↕</i></th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+    <div class="pagination" id="paginationBar"></div>
+  </div>
+</div>
+
+</div><!-- /main -->
 
 <script>
 // ════════════════════════════════════════
-//  常量 & 状态
+//  书签代码生成（核心逻辑注入到 HR 系统页面内运行）
 // ════════════════════════════════════════
-const HR_BASE = 'https://hr.xiaohongshu.com';
-let allTalents = [];
-let filteredData = [];
-let currentPage = 1;
-const PAGE_SIZE = 50;
-let sortCol = null, sortAsc = true;
+const TOOL_URL = 'https://cheying072-cmyk.github.io/talent-wash-tool/';
+
+const BOOKMARKLET_CODE = `(function(){
+  if(document.getElementById('xhs-wash-overlay'))return;
+  var s=document.createElement('style');
+  s.textContent=':root{--bpri:#1565C0;--bpli:#E3F2FD;--brad:12px;--bshadow:0 4px 24px rgba(0,0,0,.18)}'
+  +'#xhs-wash-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999999;display:flex;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}'
+  +'#xhs-wash-panel{background:#fff;border-radius:var(--brad);box-shadow:var(--bshadow);width:min(900px,95vw);max-height:90vh;overflow-y:auto;font-family:-apple-system,"PingFang SC",sans-serif}'
+  +'#xhs-wash-header{background:linear-gradient(135deg,#1565C0,#0D47A1);color:#fff;padding:16px 24px;display:flex;align-items:center;gap:12px;border-radius:var(--brad) var(--brad) 0 0}'
+  +'#xhs-wash-header h2{font-size:18px;font-weight:800;flex:1}'
+  +'#xhs-wash-close{background:rgba(255,255,255,.2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}'
+  +'#xhs-wash-body{padding:24px}'
+  +'.xb-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}'
+  +'.xb-group{display:flex;flex-direction:column;gap:6px}'
+  +'.xb-label{font-size:11px;font-weight:600;color:#666;text-transform:uppercase;letter-spacing:.5px}'
+  +'.xb-input,.xb-select{border:1.5px solid #e0e0e0;border-radius:8px;padding:10px 14px;font-size:14px;outline:none;transition:border-color .2s;background:#fff;width:100%}'
+  +'.xb-input:focus,.xb-select:focus{border-color:#1565C0}'
+  +'.xb-btn{background:#1565C0;color:#fff;border:none;padding:12px 28px;border-radius:9px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px}'
+  +'.xb-btn:hover{background:#0D47A1}'
+  +'.xb-btn:disabled{background:#90A4AE;cursor:not-allowed}'
+  +'#xb-prog-wrap{margin:16px 0;display:none}'
+  +'#xb-prog-bar-bg{background:#e0e0e0;height:8px;border-radius:100px;overflow:hidden}'
+  +'#xb-prog-bar{height:100%;background:linear-gradient(90deg,#1565C0,#42A5F5);border-radius:100px;transition:width .4s;width:0}'
+  +'#xb-log{font-size:12px;color:#666;margin-top:6px;max-height:80px;overflow-y:auto}'
+  +'#xb-result{margin-top:16px}'
+  +'.xb-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}'
+  +'.xb-stat{background:#E3F2FD;border-radius:8px;padding:12px;text-align:center}'
+  +'.xb-stat-val{font-size:24px;font-weight:800;color:#1565C0}'
+  +'.xb-stat-lbl{font-size:11px;color:#666;margin-top:2px}'
+  +'.xb-filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}'
+  +'.xb-filter-row input,.xb-filter-row select{border:1.5px solid #e0e0e0;border-radius:6px;padding:6px 10px;font-size:12px;outline:none}'
+  +'.xb-export{background:#E3F2FD;color:#1565C0;border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;margin-left:auto}'
+  +'#xb-table-wrap{max-height:380px;overflow-y:auto;border:1px solid #e0e0e0;border-radius:8px}'
+  +'#xb-table{width:100%;border-collapse:collapse;font-size:12px}'
+  +'#xb-table thead th{background:#1565C0;color:#fff;padding:8px 10px;text-align:left;position:sticky;top:0;white-space:nowrap;cursor:pointer;user-select:none}'
+  +'#xb-table tbody tr:nth-child(even){background:#f9f9f9}'
+  +'#xb-table tbody tr:hover{background:#E3F2FD}'
+  +'#xb-table td{padding:7px 10px;border-bottom:1px solid #f0f0f0;white-space:nowrap;max-width:160px;overflow:hidden;text-overflow:ellipsis}'
+  +'#xb-table a{color:#1565C0;text-decoration:none;font-weight:600}'
+  +'.xb-badge{display:inline-block;padding:1px 6px;border-radius:8px;font-size:10px;font-weight:500}'
+  +'.xb-m{background:#E3F2FD;color:#1565C0}.xb-f{background:#FCE4EC;color:#C62828}'
+  +'.xb-phd{background:#EDE7F6;color:#4527A0}.xb-ms{background:#E8EAF6;color:#283593}.xb-bs{background:#E8F5E9;color:#1B5E20}'
+  +'.xb-985{background:#FFF3E0;color:#E65100}.xb-211{background:#E8F5E9;color:#2E7D32}'
+  +'#xb-fc{font-size:12px;color:#666}';
+  document.head.appendChild(s);
+
+  var ov=document.createElement('div');ov.id='xhs-wash-overlay';
+  ov.innerHTML='<div id="xhs-wash-panel">'
+  +'<div id="xhs-wash-header"><h2>🔍 人才库洗库工具</h2><button id="xhs-wash-close" onclick="document.getElementById(\\'xhs-wash-overlay\\').remove()">✕</button></div>'
+  +'<div id="xhs-wash-body">'
+  +'<div class="xb-row">'
+  +'<div class="xb-group"><label class="xb-label">🏢 公司关键词</label><input class="xb-input" id="xb-co" placeholder="如：美团、字节跳动、阿里"></div>'
+  +'<div class="xb-group"><label class="xb-label">💼 职位关键词</label><input class="xb-input" id="xb-pos" placeholder="如：商业分析、策略运营"></div>'
+  +'</div>'
+  +'<div class="xb-row">'
+  +'<div class="xb-group"><label class="xb-label">📊 拉取数量</label><select class="xb-select" id="xb-pages"><option value="4">200条（约10秒）</option><option value="10" selected>500条（约20秒）</option><option value="20">1000条（约40秒）</option></select></div>'
+  +'<div class="xb-group"><label class="xb-label">🎓 最低学历</label><select class="xb-select" id="xb-deg"><option value="">不限</option><option value="master">硕士及以上</option><option value="bachelor">本科及以上</option></select></div>'
+  +'</div>'
+  +'<button class="xb-btn" id="xb-run" onclick="xbRun()"><span id="xb-spin">🚀</span><span id="xb-btxt">开始洗库</span></button>'
+  +'<div id="xb-prog-wrap"><div id="xb-prog-bar-bg"><div id="xb-prog-bar"></div></div><div id="xb-log"></div></div>'
+  +'<div id="xb-result"></div>'
+  +'</div></div>';
+  document.body.appendChild(ov);
+
+  var allData=[];
+  var filtered=[];
+  var sortC=null,sortA=true;
+
+  function normDeg(s){if(!s)return'';if(s.includes('博士'))return'博士';if(s.includes('硕士'))return'硕士';if(s.includes('本科')||s.includes('学士'))return'本科';if(s.includes('大专')||s.includes('专科'))return'大专';return s;}
+  var DEG_O={'博士研究生':5,'博士':5,'硕士研究生':4,'硕士':4,'本科':3,'学士':3,'大专':2,'高中':1};
+  function parseTalent(item){
+    var bi=item.basicInfo||{},edu=item.educationList||[],emp=item.employmentList||[],tags=item.tagList||[];
+    var sorted=[...edu].sort(function(a,b){return(a.startDate||'9999').localeCompare(b.startDate||'9999')});
+    var fe=sorted[0]||null;
+    var he=edu.length?edu.reduce(function(b,e){return(DEG_O[e.degree]||0)>(DEG_O[b.degree]||0)?e:b},edu[0]):null;
+    var stags=tags.map(function(t){return t.tagName}).filter(function(t){return['985','211','双一流','QS50','QS100'].includes(t)});
+    var g=bi.gender||'';
+    return{talentId:bi.talentId,name:bi.name||'—',age:bi.age||null,gender:(g.includes('女')||g==='female'||g==='FEMALE')?'女':(g.includes('男')||g==='male'||g==='MALE'?'男':'未知'),location:bi.currentLocation||bi.workplace||'—',recent_company:bi.recentCompany||(emp[0]&&emp[0].company)||'—',recent_position:bi.recentPosition||(emp[0]&&emp[0].title)||'—',work_years:bi.workYears||bi.workYear||null,first_degree:normDeg(fe&&fe.degree||''),first_school:(fe&&(fe.school||fe.schoolName))||'—',first_major:(fe&&fe.major)||'—',highest_degree:normDeg(bi.highestDegree||(he&&he.degree)||''),highest_school:bi.highestSchool||(he&&he.school)||'—',school_tags:stags};
+  }
+
+  async function xbRun(){
+    var co=document.getElementById('xb-co').value.trim();
+    var pos=document.getElementById('xb-pos').value.trim();
+    if(!co&&!pos){alert('请至少填写公司关键词或职位关键词');return;}
+    var maxP=parseInt(document.getElementById('xb-pages').value);
+    var degF=document.getElementById('xb-deg').value;
+    allData=[];filtered=[];
+    document.getElementById('xb-prog-wrap').style.display='block';
+    document.getElementById('xb-result').innerHTML='';
+    document.getElementById('xb-run').disabled=true;
+    document.getElementById('xb-btxt').textContent='拉取中...';
+    xbLog('🔍 搜索：公司「'+( co||'不限')+'」/ 职位「'+(pos||'不限')+'」');
+    var totalP=maxP;
+    for(var p=1;p<=maxP;p++){
+      try{
+        var body={shardRecruitType:'clubRecruit',orderBy:'overall',pageNum:p,pageSize:50};
+        if(co)body.currentCompanyKeyword=co;
+        if(pos)body.positionKeyword=pos;
+        var resp=await fetch('/oasis/api/recruit/recruit/talentPoolController/queryTalentsByPage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),credentials:'include'});
+        var d=await resp.json();
+        if(!d.success)throw new Error(d.message||'API失败');
+        if(p===1){var tot=d.data&&d.data.total||0;totalP=Math.min(d.data&&d.data.totalPage||1,maxP);xbLog('📊 找到'+tot.toLocaleString()+'条，计划拉取'+Math.min(tot,maxP*50)+'条');}
+        var items=d.data&&d.data.list||[];
+        if(!items.length)break;
+        var ok=degF?items.filter(function(i){var dg=i.basicInfo&&i.basicInfo.highestDegree||'';return degF==='master'?(dg.includes('博士')||dg.includes('硕士')):degF==='bachelor'?(!dg.includes('大专')&&!dg.includes('高中')&&dg!==''):true}):items;
+        allData.push.apply(allData,ok.map(parseTalent));
+        var pct=Math.round(p/totalP*100);
+        document.getElementById('xb-prog-bar').style.width=pct+'%';
+        if(p%3===0||p===totalP)xbLog('→ 第'+p+'页，累计'+allData.length+'条');
+        if(p>=(d.data&&d.data.totalPage||1))break;
+        await new Promise(function(r){setTimeout(r,200)});
+      }catch(e){xbLog('❌ '+e.message);break;}
+    }
+    document.getElementById('xb-prog-bar').style.width='100%';
+    xbLog('✅ 完成，共'+allData.length+'条');
+    document.getElementById('xb-run').disabled=false;
+    document.getElementById('xb-btxt').textContent='重新洗库';
+    filtered=[...allData];
+    renderXbResult();
+  }
+
+  function xbLog(msg){var el=document.getElementById('xb-log');el.innerHTML+='<p>'+msg+'</p>';el.scrollTop=el.scrollHeight;}
+
+  function stats(data){
+    var s={deg:{},city:{},gender:{},school:{},company:{}};
+    data.forEach(function(t){
+      var deg=t.highest_degree||t.first_degree||'未知';s.deg[deg]=(s.deg[deg]||0)+1;
+      var city=(t.location||'').replace(/[省市区县].*/,'').trim().slice(0,3);if(city&&city!=='—')s.city[city]=(s.city[city]||0)+1;
+      s.gender[t.gender]=(s.gender[t.gender]||0)+1;
+      if(t.first_school&&t.first_school!=='—')s.school[t.first_school]=(s.school[t.first_school]||0)+1;
+      if(t.recent_company&&t.recent_company!=='—')s.company[t.recent_company]=(s.company[t.recent_company]||0)+1;
+    });
+    return s;
+  }
+
+  function renderXbResult(){
+    var data=allData;var total=data.length;
+    var st=stats(data);
+    var mast=data.filter(function(t){return['博士','硕士'].includes(t.highest_degree||t.first_degree)}).length;
+    var ages=data.map(function(t){return t.age}).filter(Boolean);
+    var avg=ages.length?(ages.reduce(function(a,b){return a+b},0)/ages.length).toFixed(1):'—';
+    var t985=data.filter(function(t){return t.school_tags.includes('985')||t.school_tags.includes('211')}).length;
+    document.getElementById('xb-result').innerHTML=
+      '<div class="xb-stat-grid">'
+      +'<div class="xb-stat"><div class="xb-stat-val">'+total+'</div><div class="xb-stat-lbl">总人数</div></div>'
+      +'<div class="xb-stat"><div class="xb-stat-val">'+mast+'</div><div class="xb-stat-lbl">硕士及以上</div></div>'
+      +'<div class="xb-stat"><div class="xb-stat-val">'+avg+'</div><div class="xb-stat-lbl">平均年龄</div></div>'
+      +'<div class="xb-stat"><div class="xb-stat-val">'+t985+'</div><div class="xb-stat-lbl">985/211</div></div>'
+      +'<div class="xb-stat"><div class="xb-stat-val">'+(data.filter(function(t){return t.gender==='女'}).length)+'</div><div class="xb-stat-lbl">女性</div></div>'
+      +'<div class="xb-stat"><div class="xb-stat-val">'+(data.filter(function(t){return(t.location||'').match(/上海|北京/)}).length)+'</div><div class="xb-stat-lbl">沪京两地</div></div>'
+      +'</div>'
+      +'<div class="xb-filter-row">'
+      +'<input id="xb-search" placeholder="搜索姓名/公司/学校..." oninput="xbFilter()" style="flex:1;min-width:160px">'
+      +'<select id="xb-df" onchange="xbFilter()"><option value="">全部学历</option><option value="博士">博士</option><option value="硕士">硕士</option><option value="本科">本科</option></select>'
+      +'<select id="xb-cf" onchange="xbFilter()"><option value="">全部城市</option>'+Object.keys(st.city).sort(function(a,b){return st.city[b]-st.city[a]}).slice(0,12).map(function(c){return'<option>'+c+'</option>'}).join('')+'</select>'
+      +'<select id="xb-gf" onchange="xbFilter()"><option value="">全部性别</option><option value="男">男</option><option value="女">女</option></select>'
+      +'<span id="xb-fc"></span>'
+      +'<button class="xb-export" onclick="xbExport()">⬇ 导出CSV</button>'
+      +'</div>'
+      +'<div id="xb-table-wrap"><table id="xb-table"><thead><tr>'
+      +'<th>#</th><th onclick="xbSort(\\'name\\')">姓名</th><th onclick="xbSort(\\'age\\')">年龄</th><th>性别</th>'
+      +'<th onclick="xbSort(\\'location\\')">城市</th><th onclick="xbSort(\\'first_degree\\')">第一学历</th>'
+      +'<th onclick="xbSort(\\'first_school\\')">第一学历学校</th><th>专业</th>'
+      +'<th onclick="xbSort(\\'highest_degree\\')">最高学历</th><th onclick="xbSort(\\'highest_school\\')">最高学历学校</th>'
+      +'<th>标签</th><th onclick="xbSort(\\'recent_company\\')">最近公司</th>'
+      +'<th onclick="xbSort(\\'recent_position\\')">当前职位</th><th onclick="xbSort(\\'work_years\\')">工作年限</th>'
+      +'</tr></thead><tbody id="xb-tbody"></tbody></table></div>';
+    xbFilter();
+  }
+
+  window.xbFilter=function(){
+    var s=(document.getElementById('xb-search')&&document.getElementById('xb-search').value||'').toLowerCase();
+    var df=document.getElementById('xb-df')&&document.getElementById('xb-df').value||'';
+    var cf=document.getElementById('xb-cf')&&document.getElementById('xb-cf').value||'';
+    var gf=document.getElementById('xb-gf')&&document.getElementById('xb-gf').value||'';
+    filtered=allData.filter(function(t){
+      if(s&&![t.name,t.recent_company,t.first_school,t.highest_school,t.recent_position].join(' ').toLowerCase().includes(s))return false;
+      if(df&&(t.highest_degree||t.first_degree)!==df)return false;
+      if(cf&&!(t.location||'').includes(cf))return false;
+      if(gf&&t.gender!==gf)return false;
+      return true;
+    });
+    if(sortC){filtered.sort(function(a,b){var av=a[sortC]??'',bv=b[sortC]??'';return typeof av==='number'?(sortA?av-bv:bv-av):(sortA?String(av).localeCompare(String(bv)):String(bv).localeCompare(String(av)));});}
+    var fc=document.getElementById('xb-fc');if(fc)fc.textContent='共'+filtered.length+'条';
+    var tb=document.getElementById('xb-tbody');if(!tb)return;
+    tb.innerHTML=filtered.map(function(t,i){
+      var deg=t.highest_degree||t.first_degree||'—';
+      var dc=deg==='博士'?'xb-phd':deg==='硕士'?'xb-ms':deg==='本科'?'xb-bs':'';
+      var gc=t.gender==='女'?'xb-f':'xb-m';
+      var tgs=t.school_tags.map(function(g){return'<span class="xb-badge '+(g==='985'?'xb-985':g==='211'?'xb-211':'')+'" >'+g+'</span>'}).join('');
+      var hr='https://hr.xiaohongshu.com/talent-pool/common/club-recruit?talentId='+t.talentId;
+      return'<tr><td style="color:#bbb">'+(i+1)+'</td>'
+      +'<td><a href="'+hr+'" target="_blank">'+t.name+'</a></td>'
+      +'<td>'+(t.age||'—')+'</td>'
+      +'<td><span class="xb-badge '+gc+'">'+t.gender+'</span></td>'
+      +'<td>'+t.location+'</td>'
+      +'<td><span class="xb-badge '+dc+'">'+t.first_degree+'</span></td>'
+      +'<td title="'+t.first_school+'">'+t.first_school+'</td>'
+      +'<td title="'+t.first_major+'" style="color:#888;font-size:11px">'+t.first_major+'</td>'
+      +'<td><span class="xb-badge '+dc+'">'+deg+'</span></td>'
+      +'<td title="'+t.highest_school+'">'+t.highest_school+'</td>'
+      +'<td>'+(tgs||'—')+'</td>'
+      +'<td title="'+t.recent_company+'">'+t.recent_company+'</td>'
+      +'<td title="'+t.recent_position+'">'+t.recent_position+'</td>'
+      +'<td>'+(t.work_years!=null?t.work_years+'年':'—')+'</td>'
+      +'</tr>';
+    }).join('');
+  };
+
+  window.xbSort=function(col){if(sortC===col)sortA=!sortA;else{sortC=col;sortA=true;}xbFilter();};
+
+  window.xbExport=function(){
+    var h=['序号','姓名','年龄','性别','城市','第一学历','第一学历学校','专业','最高学历','最高学历学校','学校标签','最近公司','当前职位','工作年限','HR链接'];
+    var rows=filtered.map(function(t,i){return[i+1,t.name,t.age||'',t.gender,t.location,t.first_degree||'',t.first_school||'',t.first_major||'',t.highest_degree||'',t.highest_school||'',t.school_tags.join('/'),t.recent_company,t.recent_position,t.work_years!=null?t.work_years+'年':'','https://hr.xiaohongshu.com/talent-pool/common/club-recruit?talentId='+t.talentId];});
+    var csv=[h].concat(rows).map(function(r){return r.map(function(c){return'"'+String(c||'').replace(/"/g,'""')+'"'}).join(',')}).join('\\n');
+    var blob=new Blob(['\\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='人才洗库_'+new Date().toLocaleDateString('zh-CN').replace(/\\//g,'')+'.csv';a.click();
+  };
+})();`;
+
+// 设置书签链接
+document.getElementById('bookmarkletLink').href = 'javascript:' + encodeURIComponent(BOOKMARKLET_CODE);
+
+// ════════════════════════════════════════
+//  本页工具逻辑（书签模式降级提示）
+// ════════════════════════════════════════
+let allTalents = [], filteredData = [], currentPage = 1, PAGE_SIZE = 50, sortCol = null, sortAsc = true;
 let charts = {};
 
-// ════════════════════════════════════════
-//  Cookie 管理
-// ════════════════════════════════════════
-function getCookieHeader() {
-  let raw = document.getElementById('cookieInput').value.trim();
-  if (!raw) return null;
-  // 如果用户粘贴了完整 Cookie 行，提取 token
-  const m = raw.match(/common-internal-access-token-prod=([^;\s]+)/);
-  return m ? `common-internal-access-token-prod=${m[1]}` : `common-internal-access-token-prod=${raw}`;
-}
-
-function saveCookie() {
-  const val = document.getElementById('cookieInput').value.trim();
-  if (val) localStorage.setItem('hr_cookie', val);
-}
-
-function loadSavedCookie() {
-  const saved = localStorage.getItem('hr_cookie');
-  if (saved) {
-    document.getElementById('cookieInput').value = saved;
-    document.getElementById('cookieGuide').style.display = 'none';
-    onCookieChange();
-  }
-}
-
-function onCookieChange() {
-  const val = document.getElementById('cookieInput').value.trim();
-  const input = document.getElementById('cookieInput');
-  input.classList.remove('ok', 'err');
-  document.getElementById('cookieStatus').innerHTML = '';
-  document.getElementById('runBtn').disabled = !val;
-  if (val) localStorage.setItem('hr_cookie', val);
-}
-
-async function testCookie() {
-  const cookie = getCookieHeader();
-  if (!cookie) { showError('请先输入 Cookie'); return; }
-  const btn = document.getElementById('testBtn');
-  btn.textContent = '验证中...'; btn.disabled = true;
-  try {
-    const resp = await apiFetch('/oasis/api/recruit/recruit/talentPoolController/getTalentPoolShardCount', cookie);
-    if (resp && resp.success) {
-      document.getElementById('cookieInput').classList.add('ok');
-      document.getElementById('cookieStatus').innerHTML = `<span style="color:#2E7D32">✅ Cookie 有效，人才库共 ${(resp.data?.clubRecruit || 0).toLocaleString()} 条</span>`;
-      document.getElementById('cookieGuide').style.display = 'none';
-      saveCookie();
-    } else {
-      throw new Error(resp?.message || '返回失败');
-    }
-  } catch (e) {
-    document.getElementById('cookieInput').classList.add('err');
-    document.getElementById('cookieStatus').innerHTML = `<span style="color:#C62828">❌ Cookie 无效或已过期：${e.message}</span>`;
-  }
-  btn.textContent = '验证'; btn.disabled = false;
-}
-
-// ════════════════════════════════════════
-//  API 封装（前端直接调 HR 系统）
-// ════════════════════════════════════════
-async function apiFetch(path, cookie, body = null) {
-  const opts = {
-    method: body ? 'POST' : 'GET',
-    headers: {
-      'Cookie': cookie,
-      'Content-Type': 'application/json',
-      'Referer': HR_BASE + '/next/talent-pool',
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)'
-    },
-    credentials: 'include',
-    mode: 'cors',
-  };
-  if (body) opts.body = JSON.stringify(body);
-  const resp = await fetch(HR_BASE + path, opts);
-  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-  return resp.json();
-}
-
-// ════════════════════════════════════════
-//  数据拉取
-// ════════════════════════════════════════
-let fetchAborted = false;
-
 async function startFetch() {
-  const cookie = getCookieHeader();
-  if (!cookie) { showError('请先填写 Cookie'); return; }
-
   const companyKw = document.getElementById('companyKw').value.trim();
   const positionKw = document.getElementById('positionKw').value.trim();
   if (!companyKw && !positionKw) { showError('请至少填写公司关键词或职位关键词'); return; }
@@ -495,10 +605,7 @@ async function startFetch() {
   const maxPages = parseInt(document.getElementById('maxPages').value);
   const degFilter = document.getElementById('degFilter').value;
 
-  // 重置
-  fetchAborted = false;
-  allTalents = [];
-  filteredData = [];
+  allTalents = []; filteredData = [];
   hideError();
   document.getElementById('progressCard').classList.add('visible');
   document.getElementById('resultSection').classList.remove('visible');
@@ -507,403 +614,158 @@ async function startFetch() {
   document.getElementById('progressTitle').textContent = '正在初始化...';
   document.getElementById('runBtn').disabled = true;
   document.getElementById('runBtnText').textContent = '拉取中...';
-
-  // 折叠配置面板
+  document.getElementById('progressIcon').style.animation = 'spin 1.2s linear infinite';
   document.getElementById('configHeader').classList.add('collapsed');
   document.getElementById('configBody').classList.add('hidden');
 
-  addLog(`🔍 搜索条件：公司「${companyKw || '不限'}」/ 职位「${positionKw || '不限'}」/ 最多 ${maxPages * 50} 条`);
+  addLog(`🔍 搜索：公司「${companyKw||'不限'}」/ 职位「${positionKw||'不限'}」/ 最多 ${maxPages * 50} 条`);
 
+  let totalPages = maxPages;
   try {
-    let total = 0;
     for (let page = 1; page <= maxPages; page++) {
-      if (fetchAborted) break;
-      const body = {
-        shardRecruitType: 'clubRecruit',
-        orderBy: 'overall',
-        pageNum: page,
-        pageSize: 50,
-      };
+      const body = { shardRecruitType: 'clubRecruit', orderBy: 'overall', pageNum: page, pageSize: 50 };
       if (companyKw) body.currentCompanyKeyword = companyKw;
       if (positionKw) body.positionKeyword = positionKw;
 
-      const resp = await apiFetch('/oasis/api/recruit/recruit/talentPoolController/queryTalentsByPage', cookie, body);
-      if (!resp || !resp.success) throw new Error(resp?.message || 'API 返回失败，请检查 Cookie 是否有效');
+      const resp = await fetch('https://hr.xiaohongshu.com/oasis/api/recruit/recruit/talentPoolController/queryTalentsByPage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        credentials: 'include',
+        mode: 'cors',
+      });
+      if (!resp.ok) {
+        if (resp.status === 0 || resp.type === 'opaque') throw new Error('CORS_ERROR');
+        throw new Error(`HTTP ${resp.status}`);
+      }
+      const d = await resp.json();
+      if (!d.success) throw new Error(d.message || 'API返回失败');
 
       if (page === 1) {
-        total = resp.data?.total || 0;
-        const totalPages = Math.min(resp.data?.totalPage || 1, maxPages);
-        addLog(`📊 找到 ${total.toLocaleString()} 条人才，计划拉取前 ${Math.min(total, maxPages * 50)} 条（共 ${totalPages} 页）`);
+        const tot = d.data?.total || 0;
+        totalPages = Math.min(d.data?.totalPage || 1, maxPages);
+        addLog(`📊 找到 ${tot.toLocaleString()} 条，计划拉取 ${Math.min(tot, maxPages*50)} 条（${totalPages} 页）`);
       }
 
-      const items = resp.data?.list || [];
+      const items = d.data?.list || [];
       if (!items.length) break;
 
-      // 学历预过滤
-      const filtered = degFilter ? items.filter(item => {
-        const deg = item.basicInfo?.highestDegree || '';
-        if (degFilter === 'master') return deg.includes('博士') || deg.includes('硕士');
-        if (degFilter === 'bachelor') return !deg.includes('大专') && !deg.includes('高中') && deg !== '';
+      const ok = degFilter ? items.filter(i => {
+        const dg = i.basicInfo?.highestDegree || '';
+        if (degFilter === 'master') return dg.includes('博士') || dg.includes('硕士');
+        if (degFilter === 'bachelor') return !dg.includes('大专') && !dg.includes('高中') && dg !== '';
         return true;
       }) : items;
 
-      allTalents.push(...filtered.map(parseTalent));
-
-      const pct = Math.round(page / Math.min(resp.data?.totalPage || maxPages, maxPages) * 100);
+      allTalents.push(...ok.map(parseTalent));
+      const pct = Math.round(page / totalPages * 100);
       setProgress(pct);
-      document.getElementById('progressTitle').textContent = `已拉取 ${allTalents.length} 条人才 (${pct}%)`;
-      if (page % 3 === 0) addLog(`  → 第 ${page} 页完成，累计 ${allTalents.length} 条`);
-
-      if (page >= (resp.data?.totalPage || 1)) break;
-      await sleep(200); // 适当限速
+      document.getElementById('progressTitle').textContent = `已拉取 ${allTalents.length} 条 (${pct}%)`;
+      if (page % 3 === 0) addLog(`  → 第 ${page} 页，累计 ${allTalents.length} 条`);
+      if (page >= (d.data?.totalPage || 1)) break;
+      await sleep(200);
     }
 
     setProgress(100);
-    addLog(`✅ 拉取完成，共 ${allTalents.length} 条人才`);
+    addLog(`✅ 完成！共 ${allTalents.length} 条`);
     document.getElementById('progressTitle').textContent = `✅ 完成！共 ${allTalents.length} 条`;
-    document.getElementById('progressCard').querySelector('.spin').style.animation = 'none';
-    document.getElementById('progressCard').querySelector('.spin').textContent = '✅';
-
-    // 渲染结果
-    saveCookie();
+    document.getElementById('progressIcon').style.animation = 'none';
+    document.getElementById('progressIcon').textContent = '✅';
     renderResult(companyKw, positionKw);
-    document.getElementById('lastRunInfo').textContent = `上次：${companyKw||'全部'} · ${positionKw||'全部'} · ${allTalents.length} 条 · ${new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})}`;
+    document.getElementById('navRight').textContent = `上次：${companyKw||'全部'} · ${positionKw||'全部'} · ${allTalents.length} 条`;
 
-  } catch (e) {
-    addLog(`❌ 出错：${e.message}`);
-    document.getElementById('progressTitle').textContent = '❌ 拉取失败';
-    showError(`拉取失败：${e.message}${e.message.includes('CORS') || e.message.includes('fetch') ? '（跨域问题：需在 hr.xiaohongshu.com 同域环境使用）' : ''}`);
+  } catch(e) {
+    if (e.message === 'CORS_ERROR' || e.message.includes('Failed to fetch') || e.message.includes('CORS')) {
+      addLog('❌ 跨域限制：无法从本页面直接调用 HR 系统 API');
+      showError('⚠️ 跨域限制：请使用上方「书签方式」——把「🔍 洗库工具」拖到书签栏，然后在 hr.xiaohongshu.com 页面点击书签使用，即可绕过跨域问题。');
+    } else {
+      addLog(`❌ 错误：${e.message}`);
+      showError(`拉取失败：${e.message}`);
+    }
   }
 
   document.getElementById('runBtn').disabled = false;
   document.getElementById('runBtnText').textContent = '重新洗库';
 }
 
-// ════════════════════════════════════════
-//  数据解析
-// ════════════════════════════════════════
-const DEG_ORDER = { '博士研究生': 5, '博士': 5, '硕士研究生': 4, '硕士': 4, '本科': 3, '学士': 3, '大专': 2, '高中': 1 };
-function normDeg(s) {
-  if (!s) return '';
-  if (s.includes('博士')) return '博士';
-  if (s.includes('硕士')) return '硕士';
-  if (s.includes('本科') || s.includes('学士')) return '本科';
-  if (s.includes('大专') || s.includes('专科')) return '大专';
-  return s;
-}
-
+// 数据解析
+const DEG_ORDER = {'博士研究生':5,'博士':5,'硕士研究生':4,'硕士':4,'本科':3,'学士':3,'大专':2,'高中':1};
+function normDeg(s) { if(!s)return''; if(s.includes('博士'))return'博士'; if(s.includes('硕士'))return'硕士'; if(s.includes('本科')||s.includes('学士'))return'本科'; if(s.includes('大专')||s.includes('专科'))return'大专'; return s; }
 function parseTalent(item) {
-  const bi = item.basicInfo || {};
-  const eduList = item.educationList || [];
-  const empList = item.employmentList || [];
-  const tagList = item.tagList || [];
-
-  // 第一学历（时间最早）
-  const sortedEdu = [...eduList].sort((a, b) => (a.startDate || '9999').localeCompare(b.startDate || '9999'));
-  const firstEdu = sortedEdu[0] || null;
-
-  // 最高学历（学历最高）
-  const highestEdu = eduList.length ? eduList.reduce((best, e) => (DEG_ORDER[e.degree] || 0) > (DEG_ORDER[best.degree] || 0) ? e : best, eduList[0]) : null;
-
-  const schoolTags = tagList.map(t => t.tagName).filter(t => ['985','211','双一流','QS50','QS100','QS500','海外Top'].includes(t));
-
-  // 性别
-  const g = bi.gender || '';
-  const gender = g.includes('女') || g === 'female' || g === 'FEMALE' ? '女' : (g.includes('男') || g === 'male' || g === 'MALE' ? '男' : '未知');
-
-  return {
-    talentId: bi.talentId,
-    name: bi.name || '—',
-    age: bi.age || null,
-    gender,
-    location: bi.currentLocation || bi.workplace || '—',
-    recent_company: bi.recentCompany || (empList[0]?.company) || '—',
-    recent_position: bi.recentPosition || (empList[0]?.title) || '—',
-    work_years: bi.workYears || bi.workYear || null,
-    first_degree: normDeg(firstEdu?.degree || ''),
-    first_school: firstEdu?.school || firstEdu?.schoolName || '—',
-    first_major: firstEdu?.major || '—',
-    highest_degree: normDeg(bi.highestDegree || highestEdu?.degree || ''),
-    highest_school: bi.highestSchool || highestEdu?.school || '—',
-    school_tags: schoolTags,
-    all_tags: tagList.map(t => t.tagName),
-  };
+  const bi=item.basicInfo||{}, edu=item.educationList||[], emp=item.employmentList||[], tags=item.tagList||[];
+  const se=[...edu].sort((a,b)=>(a.startDate||'9999').localeCompare(b.startDate||'9999'));
+  const fe=se[0]||null;
+  const he=edu.length?edu.reduce((b,e)=>(DEG_ORDER[e.degree]||0)>(DEG_ORDER[b.degree]||0)?e:b,edu[0]):null;
+  const stags=tags.map(t=>t.tagName).filter(t=>['985','211','双一流','QS50','QS100'].includes(t));
+  const g=bi.gender||'';
+  return {talentId:bi.talentId,name:bi.name||'—',age:bi.age||null,gender:(g.includes('女')||g==='female'||g==='FEMALE')?'女':(g.includes('男')||g==='male'||g==='MALE'?'男':'未知'),location:bi.currentLocation||bi.workplace||'—',recent_company:bi.recentCompany||(emp[0]?.company)||'—',recent_position:bi.recentPosition||(emp[0]?.title)||'—',work_years:bi.workYears||bi.workYear||null,first_degree:normDeg(fe?.degree||''),first_school:fe?(fe.school||fe.schoolName)||'—':'—',first_major:fe?.major||'—',highest_degree:normDeg(bi.highestDegree||he?.degree||''),highest_school:bi.highestSchool||he?.school||'—',school_tags:stags};
 }
 
-// ════════════════════════════════════════
-//  统计 & 图表
-// ════════════════════════════════════════
+// 统计 & 渲染
 function computeStats(data) {
-  const s = { gender: {}, age_dist: {}, degree: {}, location: {}, school_tags: {}, first_school: {}, highest_school: {}, company: {} };
-  for (const t of data) {
-    s.gender[t.gender] = (s.gender[t.gender] || 0) + 1;
-    if (t.age) {
-      const b = t.age < 26 ? '<26' : t.age < 28 ? '26-27' : t.age < 30 ? '28-29' : t.age < 33 ? '30-32' : t.age < 36 ? '33-35' : '36+';
-      s.age_dist[b] = (s.age_dist[b] || 0) + 1;
-    }
-    const deg = t.highest_degree || t.first_degree || '未知';
-    s.degree[deg] = (s.degree[deg] || 0) + 1;
-    const city = (t.location || '').replace(/[省市区县].*/,'').trim().slice(0,3);
-    if (city && city !== '—') s.location[city] = (s.location[city] || 0) + 1;
-    for (const tag of t.school_tags) s.school_tags[tag] = (s.school_tags[tag] || 0) + 1;
-    if (t.first_school && t.first_school !== '—') s.first_school[t.first_school] = (s.first_school[t.first_school] || 0) + 1;
-    if (t.highest_school && t.highest_school !== '—') s.highest_school[t.highest_school] = (s.highest_school[t.highest_school] || 0) + 1;
-    if (t.recent_company && t.recent_company !== '—') s.company[t.recent_company] = (s.company[t.recent_company] || 0) + 1;
+  const s={gender:{},age_dist:{},degree:{},location:{},school_tags:{},first_school:{},highest_school:{},company:{}};
+  for(const t of data){
+    s.gender[t.gender]=(s.gender[t.gender]||0)+1;
+    if(t.age){const b=t.age<26?'<26':t.age<28?'26-27':t.age<30?'28-29':t.age<33?'30-32':t.age<36?'33-35':'36+';s.age_dist[b]=(s.age_dist[b]||0)+1;}
+    const deg=t.highest_degree||t.first_degree||'未知';s.degree[deg]=(s.degree[deg]||0)+1;
+    const city=(t.location||'').replace(/[省市区县].*/,'').trim().slice(0,3);if(city&&city!=='—')s.location[city]=(s.location[city]||0)+1;
+    t.school_tags.forEach(tag=>{s.school_tags[tag]=(s.school_tags[tag]||0)+1;});
+    if(t.first_school&&t.first_school!=='—')s.first_school[t.first_school]=(s.first_school[t.first_school]||0)+1;
+    if(t.highest_school&&t.highest_school!=='—')s.highest_school[t.highest_school]=(s.highest_school[t.highest_school]||0)+1;
+    if(t.recent_company&&t.recent_company!=='—')s.company[t.recent_company]=(s.company[t.recent_company]||0)+1;
   }
   return s;
 }
 
 function renderResult(companyKw, positionKw) {
-  const data = allTalents;
-  const stats = computeStats(data);
-  const total = data.length;
-
+  const data=allTalents, stats=computeStats(data), total=data.length;
   document.getElementById('resultSection').classList.add('visible');
-
-  // 统计卡片
-  const masterPlus = data.filter(t => ['博士','硕士'].includes(t.highest_degree || t.first_degree)).length;
-  const ages = data.map(t => t.age).filter(Boolean);
-  const avgAge = ages.length ? (ages.reduce((a,b) => a+b,0)/ages.length).toFixed(1) : '—';
-  const tag985 = data.filter(t => t.school_tags.includes('985') || t.school_tags.includes('211')).length;
-  const female = data.filter(t => t.gender === '女').length;
-  const femaleRate = total ? Math.round(female/total*100) : 0;
-  const shBj = data.filter(t => (t.location||'').match(/上海|北京/)).length;
-
-  document.getElementById('statGrid').innerHTML = [
-    ['总人数', total, '来自 HR 人才库'],
-    ['硕士及以上', masterPlus + '人', Math.round(masterPlus/total*100) + '%'],
-    ['平均年龄', avgAge, '岁'],
-    ['985/211', tag985 + '人', Math.round(tag985/total*100) + '%'],
-    ['女性占比', femaleRate + '%', `${female}人`],
-    ['沪京两地', shBj + '人', Math.round(shBj/total*100) + '%'],
-  ].map(([label, val, sub]) => `
-    <div class="stat-card">
-      <div class="stat-val">${val}</div>
-      <div class="stat-label">${label}</div>
-      <div class="stat-sub">${sub}</div>
-    </div>`).join('');
-
-  // 销毁旧图表
-  Object.values(charts).forEach(c => c.destroy());
-  charts = {};
-
-  // 图表容器
-  const chartsGrid = document.getElementById('chartsGrid');
-  chartsGrid.innerHTML = `
-    <div class="chart-card"><h3>📊 年龄分布</h3><div class="chart-wrap"><canvas id="cAge"></canvas></div></div>
-    <div class="chart-card"><h3>🎓 学历分布</h3><div class="chart-wrap"><canvas id="cDeg"></canvas></div></div>
-    <div class="chart-card"><h3>⚧ 性别分布</h3><div class="chart-wrap"><canvas id="cGender"></canvas></div></div>
-    <div class="chart-card"><h3>📍 城市 Top 10</h3><div class="chart-wrap"><canvas id="cCity"></canvas></div></div>
-    <div class="chart-card"><h3>🏫 第一学历学校 Top 15</h3><div class="top-list" id="listFirstSchool"></div></div>
-    <div class="chart-card"><h3>🏢 最近公司 Top 15</h3><div class="top-list" id="listCompany"></div></div>
-  `;
-
-  // 年龄
-  const ageOrder = ['<26','26-27','28-29','30-32','33-35','36+'];
-  const ageLbls = ageOrder.filter(k => stats.age_dist[k]);
-  charts.age = new Chart('cAge', { type: 'bar', data: { labels: ageLbls, datasets: [{ data: ageLbls.map(k => stats.age_dist[k]), backgroundColor: '#1565C0', borderRadius: 6 }] }, options: { plugins: { legend: { display: false } }, responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } } });
-
-  // 学历
-  const degOrder = ['博士','硕士','本科','大专','未知'];
-  const degLbls = degOrder.filter(k => stats.degree[k]);
-  charts.deg = new Chart('cDeg', { type: 'doughnut', data: { labels: degLbls, datasets: [{ data: degLbls.map(k => stats.degree[k]), backgroundColor: ['#4527A0','#1565C0','#2E7D32','#E65100','#aaa'] }] }, options: { plugins: { legend: { position: 'right' } }, responsive: true, maintainAspectRatio: false } });
-
-  // 性别
-  const gKeys = Object.keys(stats.gender);
-  charts.gender = new Chart('cGender', { type: 'doughnut', data: { labels: gKeys, datasets: [{ data: gKeys.map(k => stats.gender[k]), backgroundColor: ['#1565C0','#FF2442','#90A4AE'] }] }, options: { plugins: { legend: { position: 'right' } }, responsive: true, maintainAspectRatio: false } });
-
-  // 城市
-  const cityLbls = Object.keys(stats.location).sort((a,b) => stats.location[b]-stats.location[a]).slice(0,10);
-  charts.city = new Chart('cCity', { type: 'bar', data: { labels: cityLbls, datasets: [{ data: cityLbls.map(k => stats.location[k]), backgroundColor: '#42A5F5', borderRadius: 6 }] }, options: { plugins: { legend: { display: false } }, responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { precision: 0 } }, x: { ticks: { font: { size: 11 } } } } } });
-
-  // Top 榜单
-  renderTopList('listFirstSchool', stats.first_school, 15);
-  renderTopList('listCompany', stats.company, 15);
-
-  // 城市筛选器
-  const cityFilter = document.getElementById('cityTableFilter');
-  cityFilter.innerHTML = '<option value="">全部城市</option>';
-  Object.keys(stats.location).sort((a,b)=>stats.location[b]-stats.location[a]).slice(0,15).forEach(c => {
-    cityFilter.innerHTML += `<option value="${c}">${c}</option>`;
-  });
-
-  // 渲染表格
-  filteredData = [...allTalents];
-  currentPage = 1;
-  renderTable();
-
-  // 绑定筛选事件
-  ['searchInput','degTableFilter','cityTableFilter','genderTableFilter','tagTableFilter'].forEach(id => {
-    document.getElementById(id).oninput = applyFilters;
-  });
+  const masterPlus=data.filter(t=>['博士','硕士'].includes(t.highest_degree||t.first_degree)).length;
+  const ages=data.map(t=>t.age).filter(Boolean);
+  const avgAge=ages.length?(ages.reduce((a,b)=>a+b,0)/ages.length).toFixed(1):'—';
+  const tag985=data.filter(t=>t.school_tags.includes('985')||t.school_tags.includes('211')).length;
+  const female=data.filter(t=>t.gender==='女').length;
+  document.getElementById('statGrid').innerHTML=[['总人数',total,''],['硕士及以上',masterPlus+'人',Math.round(masterPlus/total*100)+'%'],['平均年龄',avgAge,'岁'],['985/211',tag985+'人',Math.round(tag985/total*100)+'%'],['女性占比',Math.round(female/total*100)+'%',female+'人'],['沪京两地',data.filter(t=>(t.location||'').match(/上海|北京/)).length+'人','']].map(([l,v,s])=>`<div class="stat-card"><div class="stat-val">${v}</div><div class="stat-label">${l}</div><div class="stat-sub">${s}</div></div>`).join('');
+  Object.values(charts).forEach(c=>c.destroy()); charts={};
+  document.getElementById('chartsGrid').innerHTML=`<div class="chart-card"><h3>📊 年龄分布</h3><div class="chart-wrap"><canvas id="cAge"></canvas></div></div><div class="chart-card"><h3>🎓 学历分布</h3><div class="chart-wrap"><canvas id="cDeg"></canvas></div></div><div class="chart-card"><h3>⚧ 性别分布</h3><div class="chart-wrap"><canvas id="cGender"></canvas></div></div><div class="chart-card"><h3>📍 城市 Top 10</h3><div class="chart-wrap"><canvas id="cCity"></canvas></div></div><div class="chart-card"><h3>🏫 第一学历学校 Top 15</h3><div class="top-list" id="listFirstSchool"></div></div><div class="chart-card"><h3>🏢 最近公司 Top 15</h3><div class="top-list" id="listCompany"></div></div>`;
+  const aO=['<26','26-27','28-29','30-32','33-35','36+'],aL=aO.filter(k=>stats.age_dist[k]);
+  charts.age=new Chart('cAge',{type:'bar',data:{labels:aL,datasets:[{data:aL.map(k=>stats.age_dist[k]),backgroundColor:'#1565C0',borderRadius:6}]},options:{plugins:{legend:{display:false}},responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true,ticks:{precision:0}}}}});
+  const dO=['博士','硕士','本科','大专','未知'],dL=dO.filter(k=>stats.degree[k]);
+  charts.deg=new Chart('cDeg',{type:'doughnut',data:{labels:dL,datasets:[{data:dL.map(k=>stats.degree[k]),backgroundColor:['#4527A0','#1565C0','#2E7D32','#E65100','#aaa']}]},options:{plugins:{legend:{position:'right'}},responsive:true,maintainAspectRatio:false}});
+  const gK=Object.keys(stats.gender);
+  charts.gender=new Chart('cGender',{type:'doughnut',data:{labels:gK,datasets:[{data:gK.map(k=>stats.gender[k]),backgroundColor:['#1565C0','#FF2442','#90A4AE']}]},options:{plugins:{legend:{position:'right'}},responsive:true,maintainAspectRatio:false}});
+  const cL=Object.keys(stats.location).sort((a,b)=>stats.location[b]-stats.location[a]).slice(0,10);
+  charts.city=new Chart('cCity',{type:'bar',data:{labels:cL,datasets:[{data:cL.map(k=>stats.location[k]),backgroundColor:'#42A5F5',borderRadius:6}]},options:{plugins:{legend:{display:false}},responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true,ticks:{precision:0}},x:{ticks:{font:{size:11}}}}}});
+  renderTopList('listFirstSchool',stats.first_school,15);
+  renderTopList('listCompany',stats.company,15);
+  const cf=document.getElementById('cityTableFilter');cf.innerHTML='<option value="">全部城市</option>';
+  Object.keys(stats.location).sort((a,b)=>stats.location[b]-stats.location[a]).slice(0,15).forEach(c=>{cf.innerHTML+=`<option value="${c}">${c}</option>`;});
+  filteredData=[...allTalents]; currentPage=1; renderTable();
+  ['searchInput','degTableFilter','cityTableFilter','genderTableFilter','tagTableFilter'].forEach(id=>{document.getElementById(id).oninput=applyFilters;});
 }
 
-function renderTopList(id, data, n) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  const items = Object.entries(data).sort((a,b)=>b[1]-a[1]).slice(0, n);
-  const max = items[0]?.[1] || 1;
-  el.innerHTML = items.map(([name, count], i) => `
-    <div class="top-item">
-      <div class="top-rank ${i===0?'r1':i===1?'r2':i===2?'r3':''}">${i+1}</div>
-      <div class="top-name" title="${name}">${name}</div>
-      <div class="top-bar-wrap"><div class="top-bar" style="width:${Math.round(count/max*100)}%"></div></div>
-      <div class="top-count">${count}</div>
-    </div>`).join('');
-}
+function renderTopList(id,data,n){const el=document.getElementById(id);if(!el)return;const items=Object.entries(data).sort((a,b)=>b[1]-a[1]).slice(0,n);const max=items[0]?.[1]||1;el.innerHTML=items.map(([name,count],i)=>`<div class="top-item"><div class="top-rank ${i===0?'r1':i===1?'r2':i===2?'r3':''}">${i+1}</div><div class="top-name" title="${name}">${name}</div><div class="top-bar-wrap"><div class="top-bar" style="width:${Math.round(count/max*100)}%"></div></div><div class="top-count">${count}</div></div>`).join('');}
 
-// ════════════════════════════════════════
-//  表格渲染
-// ════════════════════════════════════════
-function renderTable() {
-  const start = (currentPage - 1) * PAGE_SIZE;
-  const slice = filteredData.slice(start, start + PAGE_SIZE);
-  document.getElementById('filterCount').textContent = `共 ${filteredData.length} 条`;
-  document.getElementById('tableBody').innerHTML = slice.map((t, i) => {
-    const deg = t.highest_degree || t.first_degree || '—';
-    const tags = t.school_tags.map(tag => {
-      const cls = tag === '985' ? 'badge-985' : tag === '211' ? 'badge-211' : tag.startsWith('QS') ? 'badge-qs' : 'badge-tag';
-      return `<span class="badge ${cls}">${tag}</span>`;
-    }).join('');
-    const gClass = t.gender === '女' ? 'badge-female' : 'badge-male';
-    const href = `https://hr.xiaohongshu.com/talent-pool/common/club-recruit?talentId=${t.talentId}`;
-    return `<tr>
-      <td style="color:#bbb;font-size:12px">${start+i+1}</td>
-      <td><a class="name-link" href="${href}" target="_blank">${t.name}</a></td>
-      <td>${t.age || '—'}</td>
-      <td><span class="badge ${gClass}">${t.gender}</span></td>
-      <td>${t.location}</td>
-      <td><span class="badge badge-${t.first_degree}">${t.first_degree || '—'}</span></td>
-      <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${t.first_school}</td>
-      <td style="color:#888;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px">${t.first_major}</td>
-      <td><span class="badge badge-${deg}">${deg}</span></td>
-      <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${t.highest_school}</td>
-      <td>${tags || '—'}</td>
-      <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${t.recent_company}">${t.recent_company}</td>
-      <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${t.recent_position}</td>
-      <td>${t.work_years != null ? t.work_years + '年' : '—'}</td>
-    </tr>`;
-  }).join('');
-  renderPagination();
-}
+function renderTable(){const start=(currentPage-1)*PAGE_SIZE;const slice=filteredData.slice(start,start+PAGE_SIZE);document.getElementById('filterCount').textContent=`共 ${filteredData.length} 条`;document.getElementById('tableBody').innerHTML=slice.map((t,i)=>{const deg=t.highest_degree||t.first_degree||'—';const dc=`badge-${deg}`;const gc=t.gender==='女'?'badge-female':'badge-male';const tags=t.school_tags.map(tag=>`<span class="badge ${tag==='985'?'badge-985':tag==='211'?'badge-211':tag.startsWith('QS')?'badge-qs':'badge-tag'}">${tag}</span>`).join('');const href=`https://hr.xiaohongshu.com/talent-pool/common/club-recruit?talentId=${t.talentId}`;return`<tr><td style="color:#bbb;font-size:12px">${start+i+1}</td><td><a class="name-link" href="${href}" target="_blank">${t.name}</a></td><td>${t.age||'—'}</td><td><span class="badge ${gc}">${t.gender}</span></td><td>${t.location}</td><td><span class="badge ${dc}">${t.first_degree||'—'}</span></td><td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.first_school}</td><td style="color:#888;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px">${t.first_major}</td><td><span class="badge ${dc}">${deg}</span></td><td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.highest_school}</td><td>${tags||'—'}</td><td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${t.recent_company}">${t.recent_company}</td><td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.recent_position}</td><td>${t.work_years!=null?t.work_years+'年':'—'}</td></tr>`}).join('');renderPagination();}
 
-function renderPagination() {
-  const total = Math.ceil(filteredData.length / PAGE_SIZE);
-  const bar = document.getElementById('paginationBar');
-  if (total <= 1) { bar.innerHTML = ''; return; }
-  let html = `<span class="page-info">第 ${currentPage} / ${total} 页</span>`;
-  html += `<button class="page-btn" onclick="gotoPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹ 上一页</button>`;
-  const pages = [];
-  for (let p = 1; p <= total; p++) {
-    if (p === 1 || p === total || (p >= currentPage-2 && p <= currentPage+2)) pages.push(p);
-    else if (pages[pages.length-1] !== '...') pages.push('...');
-  }
-  pages.forEach(p => {
-    if (p === '...') html += `<span style="padding:0 4px;color:#bbb">…</span>`;
-    else html += `<button class="page-btn ${p===currentPage?'active':''}" onclick="gotoPage(${p})">${p}</button>`;
-  });
-  html += `<button class="page-btn" onclick="gotoPage(${currentPage+1})" ${currentPage===total?'disabled':''}> 下一页 ›</button>`;
-  bar.innerHTML = html;
-}
+function renderPagination(){const total=Math.ceil(filteredData.length/PAGE_SIZE);const bar=document.getElementById('paginationBar');if(total<=1){bar.innerHTML='';return;}let html=`<span class="page-info">第 ${currentPage} / ${total} 页</span><button class="page-btn" onclick="gotoPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;const pages=[];for(let p=1;p<=total;p++){if(p===1||p===total||(p>=currentPage-2&&p<=currentPage+2))pages.push(p);else if(pages[pages.length-1]!=='...')pages.push('...');}pages.forEach(p=>{if(p==='...')html+=`<span style="padding:0 4px;color:#bbb">…</span>`;else html+=`<button class="page-btn ${p===currentPage?'active':''}" onclick="gotoPage(${p})">${p}</button>`;});html+=`<button class="page-btn" onclick="gotoPage(${currentPage+1})" ${currentPage===total?'disabled':''}>›</button>`;bar.innerHTML=html;}
 
-function gotoPage(p) {
-  const total = Math.ceil(filteredData.length / PAGE_SIZE);
-  if (p < 1 || p > total) return;
-  currentPage = p;
-  renderTable();
-  document.getElementById('tableBody').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
+function gotoPage(p){const total=Math.ceil(filteredData.length/PAGE_SIZE);if(p<1||p>total)return;currentPage=p;renderTable();}
 
-// ════════════════════════════════════════
-//  排序 & 筛选
-// ════════════════════════════════════════
-function applyFilters() {
-  const search = document.getElementById('searchInput').value.toLowerCase();
-  const deg = document.getElementById('degTableFilter').value;
-  const city = document.getElementById('cityTableFilter').value;
-  const gender = document.getElementById('genderTableFilter').value;
-  const tag = document.getElementById('tagTableFilter').value;
+function applyFilters(){const search=document.getElementById('searchInput').value.toLowerCase();const deg=document.getElementById('degTableFilter').value;const city=document.getElementById('cityTableFilter').value;const gender=document.getElementById('genderTableFilter').value;const tag=document.getElementById('tagTableFilter').value;filteredData=allTalents.filter(t=>{if(search&&![t.name,t.recent_company,t.first_school,t.highest_school,t.recent_position].join(' ').toLowerCase().includes(search))return false;if(deg&&(t.highest_degree||t.first_degree)!==deg)return false;if(city&&!(t.location||'').includes(city))return false;if(gender&&t.gender!==gender)return false;if(tag&&!t.school_tags.includes(tag))return false;return true;});if(sortCol){filteredData.sort((a,b)=>{const av=a[sortCol]??'',bv=b[sortCol]??'';return typeof av==='number'?(sortAsc?av-bv:bv-av):(sortAsc?String(av).localeCompare(String(bv)):String(bv).localeCompare(String(av)));});}currentPage=1;renderTable();}
 
-  filteredData = allTalents.filter(t => {
-    if (search) {
-      const haystack = [t.name, t.recent_company, t.first_school, t.highest_school, t.recent_position, t.first_major].join(' ').toLowerCase();
-      if (!haystack.includes(search)) return false;
-    }
-    if (deg && (t.highest_degree || t.first_degree) !== deg) return false;
-    if (city && !(t.location || '').includes(city)) return false;
-    if (gender && t.gender !== gender) return false;
-    if (tag && !(t.school_tags || []).includes(tag)) return false;
-    return true;
-  });
+function sortBy(col){if(sortCol===col)sortAsc=!sortAsc;else{sortCol=col;sortAsc=true;}applyFilters();}
 
-  if (sortCol) {
-    filteredData.sort((a, b) => {
-      const av = a[sortCol] ?? '', bv = b[sortCol] ?? '';
-      if (typeof av === 'number') return sortAsc ? av - bv : bv - av;
-      return sortAsc ? String(av).localeCompare(String(bv)) : String(bv).localeCompare(String(av));
-    });
-  }
+function exportCSV(){const headers=['序号','姓名','年龄','性别','城市','第一学历','第一学历学校','专业','最高学历','最高学历学校','学校标签','最近公司','当前职位','工作年限','HR链接'];const rows=filteredData.map((t,i)=>[i+1,t.name,t.age||'',t.gender,t.location,t.first_degree||'',t.first_school||'',t.first_major||'',t.highest_degree||'',t.highest_school||'',t.school_tags.join('/'),t.recent_company,t.recent_position,t.work_years!=null?t.work_years+'年':'',`https://hr.xiaohongshu.com/talent-pool/common/club-recruit?talentId=${t.talentId}`]);const csv=[headers,...rows].map(r=>r.map(c=>`"${String(c||'').replace(/"/g,'""')}"`).join(',')).join('\n');const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`人才洗库_${new Date().toLocaleDateString('zh-CN').replace(/\//g,'')}.csv`;a.click();}
 
-  currentPage = 1;
-  renderTable();
-}
-
-function sortBy(col) {
-  if (sortCol === col) sortAsc = !sortAsc; else { sortCol = col; sortAsc = true; }
-  applyFilters();
-}
-
-// ════════════════════════════════════════
-//  导出 CSV
-// ════════════════════════════════════════
-function exportCSV() {
-  const headers = ['序号','姓名','年龄','性别','城市','第一学历','第一学历学校','专业','最高学历','最高学历学校','学校标签','最近公司','当前职位','工作年限','HR链接'];
-  const rows = filteredData.map((t, i) => [
-    i+1, t.name, t.age||'', t.gender, t.location,
-    t.first_degree||'', t.first_school||'', t.first_major||'',
-    t.highest_degree||'', t.highest_school||'',
-    t.school_tags.join('/'),
-    t.recent_company, t.recent_position,
-    t.work_years != null ? t.work_years + '年' : '',
-    `https://hr.xiaohongshu.com/talent-pool/common/club-recruit?talentId=${t.talentId}`
-  ]);
-  const csv = [headers, ...rows].map(r => r.map(c => `"${String(c||'').replace(/"/g,'""')}"`).join(',')).join('\n');
-  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  const ts = new Date().toLocaleDateString('zh-CN').replace(/\//g,'');
-  a.download = `人才洗库_${document.getElementById('companyKw').value||'全部'}_${ts}.csv`;
-  a.click();
-}
-
-// ════════════════════════════════════════
-//  辅助函数
-// ════════════════════════════════════════
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-function setProgress(pct) { document.getElementById('progressBar').style.width = pct + '%'; }
-function addLog(msg) {
-  const el = document.getElementById('progressLog');
-  el.innerHTML += `<p>${msg}</p>`;
-  el.scrollTop = el.scrollHeight;
-}
-function showError(msg) {
-  const el = document.getElementById('errorTip');
-  el.textContent = msg; el.classList.add('show');
-}
-function hideError() { document.getElementById('errorTip').classList.remove('show'); }
-function toggleConfig() {
-  document.getElementById('configHeader').classList.toggle('collapsed');
-  document.getElementById('configBody').classList.toggle('hidden');
-}
-function clearResult() {
-  allTalents = []; filteredData = [];
-  document.getElementById('resultSection').classList.remove('visible');
-  document.getElementById('progressCard').classList.remove('visible');
-  document.getElementById('runBtnText').textContent = '开始洗库';
-}
-
-// ── 初始化 ──
-loadSavedCookie();
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+function setProgress(pct){document.getElementById('progressBar').style.width=pct+'%';}
+function addLog(msg){const el=document.getElementById('progressLog');el.innerHTML+=`<p>${msg}</p>`;el.scrollTop=el.scrollHeight;}
+function showError(msg){const el=document.getElementById('errorTip');el.innerHTML=msg;el.classList.add('show');}
+function hideError(){document.getElementById('errorTip').classList.remove('show');}
+function toggleConfig(){document.getElementById('configHeader').classList.toggle('collapsed');document.getElementById('configBody').classList.toggle('hidden');}
+function clearResult(){allTalents=[];filteredData=[];document.getElementById('resultSection').classList.remove('visible');document.getElementById('progressCard').classList.remove('visible');document.getElementById('runBtnText').textContent='开始洗库';}
+function switchTab(id){document.querySelectorAll('.guide-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.guide-pane').forEach(p=>p.classList.remove('active'));event.target.classList.add('active');document.getElementById('tab-'+id).classList.add('active');}
 </script>
 </body>
 </html>
